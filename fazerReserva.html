@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Reservas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <script>
+    
+        function ValidarForm() {
+            let objForm = document.getElementById("formReserva");
+        
+            let quarto = document.getElementById("quarto").value;
+			let cama = document.getElementById("cama").value;
+            let dataEntrada = document.getElementById("dataEntrada").value;
+            let diarias = document.getElementById("diarias").value;
+              
+            let objJSON = JSON.stringify(objForm);
+
+            EnviarForm(quarto, cama, dataEntrada, diarias);
+        
+        }
+		
+        function EnviarForm(quarto, cama, dataEntrada, diarias) {
+            let xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                   
+                    document.getElementById("pMSG").innerHTML = this.responseText;
+					
+                    let objReturnJSON = JSON.parse(this.responseText);
+                    document.getElementById('pQuarto').innerHTML = objReturnJSON.quarto;
+					document.getElementById('pCama').innerHTML = objReturnJSON.cama;
+                    document.getElementById('pDataEntrada').innerHTML = objReturnJSON.dataEntrada;
+                    document.getElementById('pDiarias').innerHTML = objReturnJSON.diarias;
+
+                }
+            }
+            xmlHttp.open("GET","fazerReserva.php?reserva=" + quarto +
+                          "&cama=" + cama + "&dataEntrada=" + dataEntrada + "&diarias=" + diarias);
+            xmlHttp.send();
+        }
+    
+    </script>
+
+</head>
+
+<body>
+    
+    <!-- Aqui, fazendo reserva -->
+
+    <header>
+        <section id="navbar">
+                <h1>Site de reservas</h1>
+                <br>
+                <a href="incluirCliente.html">Inserir Cliente</a> 
+                <a href="alterarCliente.html">Alterar Cliente</a> 
+                <a href="listarClientes.html">Listar Clientes</a> 
+                <a href="fazerReserva.html">Faça sua reserva</a> 
+        </section>
+    </header>
+
+    <section id="principal">
+        <h1>
+        Hora de reservar sua estádia!
+        </h1>
+        
+        <form action="" method=GET id="formReserva">
+            
+            <h2>Reserve!</h2>
+
+            <p>Quartos com banheiro nas vagas: 
+                <select name="quartos" id="quarto" type="text">
+                    <option value="quatroVagas">Quatro vagas</option>
+                    <option value="dozeVagas">Doze vagas</option>			
+                </select>		
+            </p>
+            
+            <p>Quartos sem banheiro nas vagas: 
+                <select name="quartos" id="quarto" type="text">
+                    <option value="oitoVagas">Oito vagas</option>
+                </select>		
+            </p>
+            
+            <p>Sobre sua cama. Ela deve ficar: 
+                <select name="cama" id="cama" type="text">
+                    <option value="belicheBaixo">Em belhice: Cama de baixo</option>
+                    <option value="belicheCima">Em belhice: Cama de cima</option>
+                    <option value="pertoPorta">Perto da porta</option>
+                    <option value="pertoJanela">Perto da janela</option>
+                    <option value="luzSolarSim">Recebendo luz solar</option>
+                    <option value="luzSolarNao">Não recebendo luz solar</option>
+                </select>		
+            </p>
+
+            <p>Temos essas vagas disponíveis: 
+                <select name="dataEntrada" id="dataEntrada" type="text">
+                    <option value="seteJaneiro">7 de Janeiro, às 12h</option>
+                    <option value="oitoJaneiro">8 de Janeiro, às 12h</option>
+                    <option value="noveJaneiro">9 de Janeiro, às 12h</option>
+                </select>
+            </p>
+            
+            <p>Quantos dias passará conosco?<input type=number name="diarias" id="diarias"></p>
+
+            <input type="button" value="Inserir" onclick="ValidarForm()">
+        </form>
+
+    <br>
+    <p id="pMSG"></p>
+    <p id="pQuarto"></p>
+    <p id="pCama"></p>
+    <p id="pDataEntrada"></p>
+    <p id="pDiarias"></p>
+
+    </section>
+
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<title>3DAW - AV2</title>
+	
+    <link rel="stylesheet" href="style.css">
+    <script>
+		
+        function ValidarForm() {
+            let objForm = document.getElementById("formCliente");
+        
+            let nome = document.getElementById("nome").value;
+			let endereco = document.getElementById("endereco").value;
+            let codigoPostal = document.getElementById("codigoPostal").value;
+            let pais = document.getElementById("pais").value;
+            let cpf = document.getElementById("cpf").value;
+            let passaporte = document.getElementById("passaporte").value;
+            let email = document.getElementById("email").value;
+            let dataNasc = document.getElementById("dataNasc").value;
+		      
+            let objJSON = JSON.stringify(objForm);
+
+            EnviarForm(nome, endereco, codigoPostal, pais, cpf, passaporte, email, dataNasc);
+        
+        }
+		
+        function EnviarForm(nome, endereco, codigoPostal, pais, cpf, passaporte, email, dataNasc) {
+            let xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                   
+                    document.getElementById("pMSG").innerHTML = this.responseText;
+					
+                    let objReturnJSON = JSON.parse(this.responseText);
+                    document.getElementById('pNome').innerHTML = objReturnJSON.nome;
+					document.getElementById('pEndereco').innerHTML = objReturnJSON.endereco;
+                    document.getElementById('pPostalCode').innerHTML = objReturnJSON.codigoPostal;
+                    document.getElementById('pPais').innerHTML = objReturnJSON.pais;
+                    document.getElementById('pCPF').innerHTML = objReturnJSON.cpf;
+                    document.getElementById('pPassaporte').innerHTML = objReturnJSON.passaporte;
+                    document.getElementById('pEmail').innerHTML = objReturnJSON.email;
+                    document.getElementById('pdataNasc').innerHTML = objReturnJSON.dataNasc;
+                }
+            }
+            xmlHttp.open("GET","incluirCliente.php?cliente=" + nome +
+                          "&endereco=" + endereco + "&postalCode=" + codigoPostal + "&pais=" + pais +
+                          "&cpf=" + cpf + "&passaporte=" + passaporte + "&email=" + email + "&dataNascimento=" + dataNasc);
+            xmlHttp.send();
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Aqui, fazendo cadastro de cliente -->
+
+<header>
+    <!-- id = menu -->
+	<section id="navbar">
+			<h1>Site de reservas</h1>
+			<br>
+			<a href="incluirCliente.html">Inserir Cliente</a> 
+			<a href="alterarCliente.html">Alterar Cliente</a> 
+			<a href="listarClientes.html">Listar Clientes</a> 
+            <a href="fazerReserva.html">Faça sua reserva</a> 
+	</section>
+</header>
+
+<section id="principal">
+	<h1>
+	Cadastro de clientes:
+	</h1>
+	
+	<form action="" method=GET id="formCliente">
+        
+        <h2>Faça seu cadastro!</h2>
+
+		<!-- <p>ID: <input type=text name="id" id="id"></p> -->
+		<p>Nome: <input type=text name="nome" id="nome"></p>
+        <p>Endereço: <input type=text name="endereco" id="endereco"> </p>
+        <p>Código Postal: <input type=number name="codigoPostal" id="codigoPostal"></p>
+        <p>País: <input type=text name="pais" id="pais"></p>
+        <p>CPF: <input type=number name="cpf" id="cpf"></p>
+        <p>Passaporte: <input type=number name="passaporte" id="passaporte"></p>
+        <p>Email: <input type=text name="email" id="email"></p>
+        <p>Data de nascimento: <input type=number name="dataNasc" id="dataNasc"></p>
+
+		<input type="button" value="Cadastrar" onclick="ValidarForm()">
+	</form>
+
+<br><br><br>
+<p id="pMSG"></p>
+<p id="pNome"></p>
+<p id="pEndereco"></p>
+<p id="pPostalCode"></p>
+<p id="pPais"></p>
+<p id="pCPF"></p>
+<p id="pPassaporte"></p>
+<p id="pEmail"></p>
+<p id="pdataNasc"></p>
+
+
+</section>
+
+</body>
+</html>
